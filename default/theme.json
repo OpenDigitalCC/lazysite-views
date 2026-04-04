@@ -1,0 +1,10 @@
+{
+  "name": "Default",
+  "version": "1.0.0",
+  "author": "OpenDigital CC",
+  "description": "Clean neutral light theme. No external dependencies.",
+  "files": [
+    "view.tt",
+    "assets/main.css"
+  ]
+}

@@ -11,6 +11,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>[% page_title %][% IF site_name %] - [% site_name %][% END %]</title>
+  [% IF theme_assets %]<link rel="stylesheet" href="[% theme_assets %]/main.css">[% END %]
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
