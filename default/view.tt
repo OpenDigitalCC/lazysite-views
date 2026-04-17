@@ -284,6 +284,24 @@
       font-size: 13px;
     }
 
+    /* --- Theme switcher --- */
+
+    #theme-switcher {
+      background: none;
+      border: 1px solid currentColor;
+      color: inherit;
+      font: inherit;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    #theme-switcher:hover {
+      opacity: 1;
+    }
+
     /* --- Responsive --- */
 
     @media (max-width: 600px) {
@@ -351,6 +369,7 @@
           </ul>
           [% END %]
         [% END %]
+        <button id="theme-switcher" aria-label="Switch colour theme" style="cursor:pointer">Switch theme</button>
       </nav>
     </div>
   </header>
@@ -380,6 +399,51 @@
       <span>Powered by <a href="https://lazysite.io">lazysite</a></span>
     </div>
   </footer>
+
+  <script>
+  (function() {
+    var themes = ['default', 'dark'];
+    var labels = {
+      'default': 'Switch to dark',
+      'dark':    'Switch to default'
+    };
+
+    function getCookie(name) {
+      var match = document.cookie.match(
+        new RegExp('(?:^|;)\\s*' + name + '=([^;]*)')
+      );
+      return match ? decodeURIComponent(match[1]) : '';
+    }
+
+    function setCookie(name, value) {
+      document.cookie = name + '=' + encodeURIComponent(value) +
+        '; path=/; max-age=31536000; SameSite=Lax';
+    }
+
+    function currentTheme() {
+      var c = getCookie('lazysite_theme');
+      return themes.indexOf(c) !== -1 ? c : themes[0];
+    }
+
+    function nextTheme() {
+      var idx = themes.indexOf(currentTheme());
+      return themes[(idx + 1) % themes.length];
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var btn = document.getElementById('theme-switcher');
+      if (!btn) return;
+
+      var next = nextTheme();
+      btn.textContent = labels[next] || 'Switch theme';
+
+      btn.addEventListener('click', function() {
+        setCookie('lazysite_theme', next);
+        location.reload();
+      });
+    });
+  })();
+  </script>
 
 </body>
 </html>

@@ -222,6 +222,77 @@ Check:
 - Empty nav renders gracefully
 - Footer present
 
+## Theme switching
+
+lazysite supports a cookie-based theme switcher that allows visitors
+to switch between installed themes. The switcher is implemented in
+the view template itself - the processor reads the cookie and resolves
+the appropriate theme.
+
+### How it works
+
+1. Visitor clicks the theme switcher button
+2. JS sets the `lazysite_theme` cookie to the next theme name
+3. Page reloads
+4. Processor reads the cookie in `get_layout_path()` and serves the
+   named theme's `view.tt`
+
+Cookie priority in the processor:
+
+    layout: front matter > lazysite_theme cookie > theme: in lazysite.conf > default view.tt
+
+### Declaring available themes
+
+Each view declares which themes it participates in via the `themes`
+array in the switcher JS:
+
+    const themes = ['default', 'dark'];
+
+Add theme names to this array to make them available in the switcher.
+Themes are cycled in order - clicking the button advances to the next
+theme, wrapping around at the end.
+
+### Adding a new theme variant
+
+To add a `high-contrast` theme:
+
+1. Create `lazysite-views/high-contrast/view.tt` with appropriate CSS
+2. Install it at `public_html/lazysite/themes/high-contrast/view.tt`
+3. Add `'high-contrast'` to the `themes` array in each participating view
+4. Add a label entry: `'high-contrast': 'Switch to high contrast'`
+
+Any number of theme variants can be added. Common accessibility variants:
+
+`high-contrast`
+: Black background, white text, no gradients. For users with visual
+  impairment or in bright environments.
+
+`large-text`
+: Same palette as default but larger base font size and increased
+  line height. For users who need larger text without browser zoom.
+
+`reduced-motion`
+: Disables CSS transitions and animations. For users with vestibular
+  disorders or motion sensitivity.
+
+### Cookie properties
+
+    Name:     lazysite_theme
+    Value:    theme name (e.g. dark, high-contrast)
+    Path:     / (site-wide)
+    Max-age:  31536000 (one year)
+    SameSite: Lax
+
+The cookie is set and read entirely client-side for the button
+interaction. The processor reads it server-side via `$ENV{HTTP_COOKIE}`
+to resolve the correct `view.tt` at render time.
+
+### No-JS fallback
+
+When JavaScript is unavailable, the button renders with static text
+"Switch theme" and clicking it has no effect. The site remains fully
+functional - visitors simply cannot switch themes without JS.
+
 ## Directory structure
 
 A view directory contains:
