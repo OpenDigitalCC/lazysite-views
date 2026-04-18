@@ -462,11 +462,6 @@
   <script>
   (function() {
     var themes = ['default', 'dark'];
-    var labels = {
-      'default': 'Switch to default',
-      'dark':    'Switch to dark'
-    };
-
     function getCookie(name) {
       var match = document.cookie.match(
         new RegExp('(?:^|;)\\s*' + name + '=([^;]*)')
@@ -494,7 +489,7 @@
       if (!btn) return;
 
       var next = nextTheme();
-      btn.textContent = labels[next] || 'Switch theme';
+      btn.textContent = 'Switch to ' + next;
 
       btn.addEventListener('click', function() {
         setCookie('lazysite_theme', next);
