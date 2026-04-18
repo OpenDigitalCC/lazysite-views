@@ -463,8 +463,8 @@
   (function() {
     var themes = ['default', 'dark'];
     var labels = {
-      'default': 'Switch to dark',
-      'dark':    'Switch to default'
+      'default': 'Switch to default',
+      'dark':    'Switch to dark'
     };
 
     function getCookie(name) {
